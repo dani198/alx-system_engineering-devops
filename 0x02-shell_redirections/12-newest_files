@@ -1,2 +1,6 @@
 #!/bin/bash
+<<<<<<< HEAD
 ls -1t | head -10
+=======
+ls -t1 | head -n 10
+>>>>>>> 15b379ea293a2f3e4e94abb3d7afe1e00ebb3684
