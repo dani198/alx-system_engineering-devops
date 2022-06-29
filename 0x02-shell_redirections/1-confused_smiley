@@ -1,2 +1,6 @@
 #!/bin/bash
+<<<<<<< HEAD
 echo "\"(Ôo)'"
+=======
+echo \"\(Ôo\)\' 
+>>>>>>> cbec461a9a763a68e9d613dce0ebb0fddb5fbd1b
