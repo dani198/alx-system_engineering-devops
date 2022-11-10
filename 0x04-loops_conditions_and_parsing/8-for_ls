@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 # This script is displaying "Best School" 10 times
-i=10
-until [ "$i" -le 0 ]
+for i in *
 do
-    echo "Best School"
-    i=$((i - 1))
+    echo "$i" | cut -d'-' -f2
 done
-i=$i
