@@ -18,3 +18,29 @@ Improve testing of the system's failover mechanisms to ensure they function as i
 Invest in monitoring and alerting tools to provide greater visibility into system health and performance
 Conduct regular incident response drills to test the team's response to different types of incidents.
 By conducting this postmortem, the team was able to identify areas for improvement and develop a plan for preventing similar incidents from happening in the future.
+
+------------------------------------------------
+                                             +-----------------------+
+                                             |  Customer Experience  |
+                                             +-----------+-----------+
+                                                         |
+                    +------------------------------------+-------------------------------------+
+                    |                                                                              |
+                    |                                                                              |
+            +-------v--------+                                                          +--------v---------+
+            |   Frontend     |                                                          |   Backend        |
+            +----------------+                                                          +-----------------+
+                    |                                                                              |
+                    |                                                                              |
+            +-------v--------+                                                          +--------v---------+
+            |   Load         |                                                          |   Order          |
+            |   Balancer     |                                                          |   Processing     |
+            +-------+--------+                                                          +--------+---------+
+                    |                                                                              |
+                    |                                                                              |
+            +-------v--------+                                                          +--------v---------+
+            |   Web          |                                                          |   Database       |
+            |   Server       |                                                          |   Server         |
+            +----------------+                                                          +-----------------+
+
+
