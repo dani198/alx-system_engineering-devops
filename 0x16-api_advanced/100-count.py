@@ -1,36 +1,32 @@
-import praw
+import requests
 
-def count_words(subreddit, word_list, reddit=None, counts=None):
-    if reddit is None:
-        reddit = praw.Reddit(
-            client_id='your_client_id',
-            client_secret='your_client_secret',
-            user_agent='your_user_agent'
-        )
+def count_words(subreddit, word_list, after=None, counts=None):
     if counts is None:
         counts = {}
+    if after is None:
+        url = f"https://www.reddit.com/r/{subreddit}/hot.json"
+    else:
+        url = f"https://www.reddit.com/r/{subreddit}/hot.json?after={after}"
+    headers = {"User-Agent": "Mozilla/5.0"}
+    response = requests.get(url, headers=headers, allow_redirects=False)
 
-    try:
-        sub = reddit.subreddit(subreddit)
-        hot_posts = sub.hot(limit=100)
-    except:
-        # If the subreddit is invalid, return without printing anything
-        return
-
-    for post in hot_posts:
-        title_words = post.title.lower().split()
-        for word in word_list:
-            if word.lower() in title_words and not any(c in word for c in ['.', '!', '_']):
-                counts[word.lower()] = counts.get(word.lower(), 0) + title_words.count(word.lower())
-
-    if hot_posts:
-        last_post = hot_posts[-1].created_utc
-        next_posts = sub.search('', sort='new', after=last_post)
-        if next_posts:
-            count_words(subreddit, word_list, reddit=reddit, counts=counts)
+    if response.status_code == 200:
+        data = response.json()["data"]
+        for post in data["children"]:
+            title = post["data"]["title"].lower()
+            for word in word_list:
+                count = title.count(word.lower())
+                if count > 0:
+                    if word.lower() in counts:
+                        counts[word.lower()] += count
+                    else:
+                        counts[word.lower()] = count
+        if data["after"] is not None:
+            count_words(subreddit, word_list, data["after"], counts)
         else:
-            # Sort the counts by descending value and ascending alphabetical order
             sorted_counts = sorted(counts.items(), key=lambda x: (-x[1], x[0]))
             for word, count in sorted_counts:
-                print(word, count)
+                print(f"{word}: {count}")
+    else:
+        print(None)
 
